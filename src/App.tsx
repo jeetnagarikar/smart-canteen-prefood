@@ -5,7 +5,7 @@ import CanteenHeader from './components/CanteenHeader';
 import StudentPortal from './components/StudentPortal';
 import StaffPortal from './components/StaffPortal';
 import { motion, AnimatePresence } from 'motion/react';
-import { Bell, CheckCircle2, IndianRupee, Wallet, RefreshCw, Sparkles, Smartphone, Monitor, X } from 'lucide-react';
+import { Bell, CheckCircle2, IndianRupee, Wallet, RefreshCw, Sparkles, Utensils, Monitor, X } from 'lucide-react';
 
 const INITIAL_STUDENTS: Student[] = [
   {
@@ -28,7 +28,7 @@ const INITIAL_STUDENTS: Student[] = [
 
 export default function App() {
   // Portal View Mode
-  const [view, setView] = useState<'student' | 'staff' | 'split'>('split');
+  const [view, setView] = useState<'student' | 'staff' | 'split'>('student');
 
   // Core Lifted Database States (Synced to localStorage)
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -364,18 +364,46 @@ export default function App() {
       <main className="flex-grow">
         {/* VIEW 1: STUDENT VIEW ONLY */}
         {view === 'student' && (
-          <div className="max-w-md mx-auto py-6">
-            <div className="bg-white rounded-[40px] border-[12px] border-slate-900 shadow-2xl overflow-hidden min-h-[780px] relative">
-              {/* Phone Status bar */}
-              <div className="bg-slate-900 text-white h-7 px-6 flex items-center justify-between text-[10px] font-mono select-none">
-                <span>9:41 AM</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-indigo-400">Live Connected</span>
-                  <span>🔋 99%</span>
-                </div>
+          <StudentPortal
+            menuItems={menuItems}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            registeredStudents={registeredStudents}
+            setRegisteredStudents={setRegisteredStudents}
+            orders={orders}
+            onPlaceOrder={handlePlaceOrder}
+            onUpdateOrderStatus={handleUpdateOrderStatus}
+            notifications={notifications}
+          />
+        )}
+
+        {/* VIEW 2: STAFF VIEW ONLY */}
+        {view === 'staff' && (
+          <StaffPortal
+            menuItems={menuItems}
+            setMenuItems={setMenuItems}
+            orders={orders}
+            onUpdateOrderStatus={handleUpdateOrderStatus}
+          />
+        )}
+
+        {/* VIEW 3: SPLIT DUAL SCREEN */}
+        {view === 'split' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 items-start">
+            
+            {/* Left Student Portal Panel */}
+            <div className="lg:col-span-6 space-y-3">
+              <div className="flex items-center justify-between px-2">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-widest flex items-center gap-1.5">
+                  <Utensils className="h-4 w-4 text-indigo-600" />
+                  Student Pre-Order Portal
+                </span>
+                <span className="text-[10px] bg-indigo-50 text-indigo-700 font-bold px-2.5 py-0.5 rounded-full border border-indigo-100">
+                  Student Live View
+                </span>
               </div>
               
-              <div className="overflow-y-auto max-h-[750px]">
+              <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-2">
                 <StudentPortal
                   menuItems={menuItems}
                   currentUser={currentUser}
@@ -389,70 +417,20 @@ export default function App() {
                 />
               </div>
             </div>
-          </div>
-        )}
 
-        {/* VIEW 2: STAFF VIEW ONLY */}
-        {view === 'staff' && (
-          <StaffPortal
-            menuItems={menuItems}
-            setMenuItems={setMenuItems}
-            orders={orders}
-            onUpdateOrderStatus={handleUpdateOrderStatus}
-          />
-        )}
-
-        {/* VIEW 3: SPLIT simulator SCREEN */}
-        {view === 'split' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 items-start">
-            
-            {/* Left Mobile Student Simulator */}
-            <div className="lg:col-span-5 space-y-3">
+            {/* Right Canteen Staff Terminal */}
+            <div className="lg:col-span-6 space-y-3">
               <div className="flex items-center justify-between px-2">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
-                  <Smartphone className="h-4 w-4 text-slate-400" />
-                  Student Mobile Interface
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-widest flex items-center gap-1.5">
+                  <Monitor className="h-4 w-4 text-indigo-600" />
+                  Kitchen & Counter Terminal
                 </span>
-                <span className="text-[10px] bg-indigo-500/10 text-indigo-700 font-mono font-bold px-2.5 py-0.5 rounded-full">
-                  Interactive Simulator
+                <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2.5 py-0.5 rounded-full border border-emerald-100">
+                  Staff Live View
                 </span>
               </div>
-              
-               {/* Phone Chassis Container */}
-              <div className="bg-white rounded-[40px] border-[12px] border-slate-900 shadow-2xl overflow-hidden min-h-[720px] relative">
-                {/* Phone Top Notch Status bar */}
-                <div className="bg-slate-900 text-white h-8 px-6 flex items-center justify-between text-[10px] font-mono select-none">
-                  <span>11:50 AM</span>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-indigo-400 font-bold">SIM ACTIVE</span>
-                    <span>🔋 100%</span>
-                  </div>
-                </div>
 
-                <div className="overflow-y-auto max-h-[690px]">
-                  <StudentPortal
-                    menuItems={menuItems}
-                    currentUser={currentUser}
-                    setCurrentUser={setCurrentUser}
-                    registeredStudents={registeredStudents}
-                    setRegisteredStudents={setRegisteredStudents}
-                    orders={orders}
-                    onPlaceOrder={handlePlaceOrder}
-                    onUpdateOrderStatus={handleUpdateOrderStatus}
-                    notifications={notifications}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Right Canteen Staff Terminal Simulator */}
-            <div className="lg:col-span-7 space-y-3">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5 px-2">
-                <Monitor className="h-4 w-4 text-slate-400" />
-                Kitchen Counter Monitor
-              </span>
-
-              <div className="bg-slate-50 border border-slate-200 rounded-3xl min-h-[750px] shadow-sm">
+              <div className="bg-slate-50 border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
                 <StaffPortal
                   menuItems={menuItems}
                   setMenuItems={setMenuItems}

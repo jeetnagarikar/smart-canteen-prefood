@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChefHat, Utensils, Smartphone, Monitor, Sparkles, Bell, Wallet, User, LogOut, RefreshCw } from 'lucide-react';
+import { ChefHat, Utensils, GraduationCap, Monitor, Columns2, Sparkles, Bell, Wallet, User, LogOut, RefreshCw } from 'lucide-react';
 import { Student, Notification } from '../types';
 
 interface CanteenHeaderProps {
@@ -55,7 +55,7 @@ export default function CanteenHeader({
               }`}
               id="btn-view-student"
             >
-              <Smartphone className="h-3.5 w-3.5" />
+              <GraduationCap className="h-3.5 w-3.5" />
               <span className="hidden md:inline">Student Portal</span>
               <span className="md:hidden">Student</span>
             </button>
@@ -81,9 +81,9 @@ export default function CanteenHeader({
               }`}
               id="btn-view-split"
             >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span className="hidden md:inline">Split Simulator</span>
-              <span className="md:hidden">Split</span>
+              <Columns2 className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">Side-by-Side View</span>
+              <span className="md:hidden">Dual</span>
             </button>
           </div>
 
